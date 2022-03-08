@@ -7,7 +7,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(sorts
     src/main.cpp
-    src/mergesort.cpp
 )
 add_executable(generate src/generate.cpp)
 
