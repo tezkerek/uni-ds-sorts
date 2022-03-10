@@ -1,4 +1,5 @@
 #include "mergesort.hpp"
+#include "radix_sort.hpp"
 #include <algorithm>
 #include <cstddef>
 #include <filesystem>
@@ -54,7 +55,10 @@ std::chrono::duration<double> run_sort(Test &test, SortFunc sort_fn) {
 }
 
 const std::vector<std::pair<std::string, SortFunc>> sort_functions = {
-    {"mergesort", sorts::mergesort}
+    {"radix sort (base 2^16)", sorts::radix_sort<65536>},
+    {"radix sort (base 16)", sorts::radix_sort<16>},
+    {"radix sort (base 10)", sorts::radix_sort<10>},
+    {"mergesort", sorts::mergesort},
 };
 
 void test_sorts(Test &test) {
