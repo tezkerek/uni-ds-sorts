@@ -7,6 +7,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(sorts
     src/main.cpp
+    src/utils.cpp
+    src/Test.cpp
 )
 add_executable(generate src/generate.cpp)
 
