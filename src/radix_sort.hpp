@@ -17,7 +17,8 @@ inline int compute_key(unsigned num, unsigned power_or_shift) {
 };
 
 using It = std::vector<int>::iterator;
-template <unsigned Base> void counting_sort(It start, It end, unsigned power_or_shift) {
+template <unsigned Base>
+void counting_sort(It start, It end, unsigned power_or_shift) {
     std::vector<int> count(Base, 0);
 
     for (auto it = start; it != end; it++) {
