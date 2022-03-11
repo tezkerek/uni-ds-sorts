@@ -1,12 +1,11 @@
 #pragma once
 
-#include <cstdio>
 #include <vector>
 
 namespace {
-
-template <typename It, typename BufIt>
-void merge(const It start, const It mid, const It end, const BufIt buffer) {
+template <typename RandomIt, typename BufIt>
+void merge(const RandomIt start, const RandomIt mid, const RandomIt end,
+           const BufIt buffer) {
     auto it1 = start;
     auto it2 = mid;
     auto it_buf = buffer;
@@ -20,7 +19,7 @@ void merge(const It start, const It mid, const It end, const BufIt buffer) {
             *it_buf = *it1;
             ++it1;
         }
-        ++it_buf;
+        std::advance(it_buf, 1);
     }
 
     // Add remaining elements
@@ -31,8 +30,9 @@ void merge(const It start, const It mid, const It end, const BufIt buffer) {
     std::move(buffer, buffer + std::distance(start, end), start);
 }
 
-template <typename It, typename BufIt>
-void mergesort_buffer(const It start, const It end, const BufIt buffer) {
+template <typename RandomIt, typename BufIt>
+void mergesort_buffer(const RandomIt start, const RandomIt end,
+                      const BufIt buffer) {
     if (std::distance(start, end) <= 1) {
         // Stop at a single element
         return;
@@ -46,8 +46,9 @@ void mergesort_buffer(const It start, const It end, const BufIt buffer) {
 } // namespace
 
 namespace sorts {
-template <typename It> void mergesort(const It start, const It end) {
-    using ValueType = typename std::iterator_traits<It>::value_type;
+template <typename RandomIt>
+void mergesort(const RandomIt start, const RandomIt end) {
+    using ValueType = typename std::iterator_traits<RandomIt>::value_type;
     std::vector<ValueType> buffer(start, end);
     mergesort_buffer(start, end, buffer.begin());
 }
