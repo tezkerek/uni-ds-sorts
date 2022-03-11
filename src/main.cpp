@@ -2,6 +2,7 @@
 #include "mergesort.hpp"
 #include "quicksort.hpp"
 #include "radix_sort.hpp"
+#include "shellsort.hpp"
 #include "utils.hpp"
 #include <algorithm>
 #include <cstddef>
@@ -16,10 +17,11 @@ using SortFunc = void (*)(std::vector<int>::iterator,
                           std::vector<int>::iterator);
 using SortFuncEntry = std::pair<std::string_view, SortFunc>;
 
-constexpr std::array<SortFuncEntry, 5> sort_functions = {{
+constexpr std::array<SortFuncEntry, 6> sort_functions = {{
     {"radix sort (base 2^16)", sorts::radix_sort<65536>},
     {"radix sort (base 16)", sorts::radix_sort<16>},
     {"radix sort (base 10)", sorts::radix_sort<10>},
+    {"shellsort", sorts::shellsort<sorts::shellsort_gaps::CIURA>},
     {"quicksort", sorts::quicksort},
     {"mergesort", sorts::mergesort},
 }};
