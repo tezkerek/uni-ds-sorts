@@ -1,5 +1,6 @@
 #include "Test.hpp"
 #include "mergesort.hpp"
+#include "quicksort.hpp"
 #include "radix_sort.hpp"
 #include "utils.hpp"
 #include <algorithm>
@@ -15,10 +16,11 @@ using SortFunc = void (*)(std::vector<int>::iterator,
                           std::vector<int>::iterator);
 using SortFuncEntry = std::pair<std::string_view, SortFunc>;
 
-constexpr std::array<SortFuncEntry, 4> sort_functions = {{
+constexpr std::array<SortFuncEntry, 5> sort_functions = {{
     {"radix sort (base 2^16)", sorts::radix_sort<65536>},
     {"radix sort (base 16)", sorts::radix_sort<16>},
     {"radix sort (base 10)", sorts::radix_sort<10>},
+    {"quicksort", sorts::quicksort},
     {"mergesort", sorts::mergesort},
 }};
 constexpr std::size_t MAX_SORT_NAME_LENGTH =
