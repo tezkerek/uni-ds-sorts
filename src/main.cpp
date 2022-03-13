@@ -33,19 +33,19 @@ constexpr std::size_t MAX_SORT_NAME_LENGTH =
         ->first.length();
 
 void test_sorts(Test &test) {
-    std::cerr << "n = " << test.get_n() << ", max = " << test.get_max_value()
+    std::cout << "n = " << test.get_n() << ", max = " << test.get_max_value()
               << '\n';
 
     // Compute expected answer using std::sort
     Test expected_test(test);
     auto result = expected_test.run_sort(std::sort);
-    std::cout << "	✔ " << right_pad("std::sort", MAX_SORT_NAME_LENGTH)
+    std::cout << "\t✔ " << right_pad("std::sort", MAX_SORT_NAME_LENGTH)
               << " : " << result.count() << '\n';
 
     for (auto [sort_fn_name, sort_fn] : sort_functions) {
         result = test.run_sort(sort_fn);
         auto matches_expected = test.get_values() == expected_test.get_values();
-        std::cout << (matches_expected ? "	✔ " : "	❌ ")
+        std::cout << (matches_expected ? "\t✔ " : "\t✘ ")
                   << right_pad(sort_fn_name, MAX_SORT_NAME_LENGTH) << " : "
                   << result.count() << '\n';
     }
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
     }
 
     for (const auto &test_file_path : get_files_in_order(tests_dir_path)) {
-        std::cerr << "Sorting " << test_file_path.filename() << '\n';
+        std::cout << "Sorting " << test_file_path.filename() << '\n';
         std::ifstream test_file_is(test_file_path);
 
         Test test;
