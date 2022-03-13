@@ -19,9 +19,9 @@ std::vector<int> &Test::get_values() { return values; }
 /** Sort the elements using `sort_fn` and return the elapsed time. */
 std::chrono::duration<double> Test::run_sort(SortFunc sort_fn) {
     // Measure sort duration
-    auto start_time = std::chrono::system_clock::now();
+    auto start_time = std::chrono::high_resolution_clock::now();
     sort_fn(get_values().begin(), get_values().end());
-    auto end_time = std::chrono::system_clock::now();
+    auto end_time = std::chrono::high_resolution_clock::now();
 
     return end_time - start_time;
 }
