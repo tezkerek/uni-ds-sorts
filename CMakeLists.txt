@@ -9,6 +9,7 @@ add_executable(sorts
     src/main.cpp
     src/utils.cpp
     src/Test.cpp
+    src/shellsort.cpp
 )
 add_executable(generate src/generate.cpp)
 

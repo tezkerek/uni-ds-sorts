@@ -1,22 +1,24 @@
 #pragma once
 
-#include <array>
+#include <vector>
 
 namespace sorts {
 
 namespace shellsort_gaps {
-    constexpr std::array<std::size_t, 8> CIURA = {701, 301, 132, 57,
-                                                  23,  10,  4,   1};
-}
+std::vector<std::size_t> &ciura(std::size_t size);
+std::vector<std::size_t> &tokuda(std::size_t size);
+} // namespace shellsort_gaps
 
-template <auto GAPS, typename RandomIt>
+template <auto GapFunc, typename RandomIt>
 void shellsort(RandomIt start, RandomIt end) {
-    for (auto gap : GAPS) {
-        for (auto it1 = start + gap; it1 != end; it1++) {
+    auto gaps = GapFunc(std::distance(start, end));
+
+    for (auto gap = gaps.rbegin(); gap != gaps.rend(); std::advance(gap, 1)) {
+        for (auto it1 = start + *gap; it1 < end; it1++) {
             auto it2 = it1;
-            while (std::distance(start, it2) >= gap && *(it2 - gap) > *it2) {
-                std::iter_swap(it2, it2 - gap);
-                it2 -= gap;
+            while (std::distance(start, it2) >= *gap && *(it2 - *gap) > *it2) {
+                std::iter_swap(it2, it2 - *gap);
+                it2 -= *gap;
             }
         }
     }
