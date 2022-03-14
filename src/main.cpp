@@ -54,7 +54,7 @@ void test_sorts(Test<Num> &test) {
     // Run every sorting algorithm in a new thread
     std::vector<std::thread> sorting_threads;
     for (auto [sort_name, sort_fn] : sort_functions) {
-        sorting_threads.push_back(std::thread([=]() mutable {
+        std::thread thread([=]() mutable {
             auto result = test.run_sort(sort_fn);
             auto matches_expected =
                 test.get_values() == expected_result.get_values();
@@ -65,11 +65,13 @@ void test_sorts(Test<Num> &test) {
                    << right_pad(sort_name, MAX_SORT_NAME_LENGTH) << " : "
                    << result.count() << '\n';
             std::cout << output.str();
-        }));
+        });
+        thread.join();
+        sorting_threads.push_back(std::move(thread));
     }
 
     for (auto &thread : sorting_threads) {
-        thread.join();
+        /* thread.join(); */
     }
     std::cout << '\n';
 }
