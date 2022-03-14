@@ -5,8 +5,8 @@
 namespace {
 template <typename RandomIt>
 RandomIt median_of_3(RandomIt start, RandomIt end) {
-    auto mid = start + std::distance(start, end) / 2 - 1;
     auto last = end - 1;
+    auto mid = start + std::distance(start, last) / 2;
 
     if (*mid < *start) {
         std::iter_swap(mid, start);
@@ -14,16 +14,17 @@ RandomIt median_of_3(RandomIt start, RandomIt end) {
     if (*last < *start) {
         std::iter_swap(last, start);
     }
-    if (*mid < *last) {
+    if (*last < *mid) {
         std::iter_swap(mid, last);
     }
 
-    return last;
+    return mid;
 }
 
 template <typename RandomIt>
 RandomIt hoare_partition(RandomIt start, RandomIt end) {
     auto pivot = median_of_3(start, end);
+    auto pivot_val = *pivot;
 
     auto i = start - 1;
     auto j = end;
@@ -31,10 +32,10 @@ RandomIt hoare_partition(RandomIt start, RandomIt end) {
     while (true) {
         do {
             i++;
-        } while (*i < *pivot);
+        } while (*i < pivot_val);
         do {
             j--;
-        } while (*j > *pivot);
+        } while (*j > pivot_val);
 
         if (i >= j)
             return j;
