@@ -1,16 +1,18 @@
 ### Build
 
-    $ mkdir debug/
-    $ cmake -B debug/
-    $ cmake --build debug/
+Build in release mode for optimizations:
+
+    $ mkdir release/
+    $ cmake -B release/ -DCMAKE_BUILD_TYPE="Release"
+    $ cmake --build release/
 
 ### Run
 
 Generate tests:
 
     $ mkdir tests/
-    $ ./debug/generate tests/
+    $ ./release/generate tests/
 
 Benchmark sorting algorithms:
 
-    $ ./debug/sorts tests/
+    $ ./release/sorts tests/
