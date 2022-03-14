@@ -1,23 +1,30 @@
 #include "Test.hpp"
+
 #include <chrono>
 #include <cstddef>
 #include <istream>
 #include <vector>
 
-Test::Test() : n(0), max_value(0) {}
+template <typename Num> Test<Num>::Test() : n(0), max_value(0) {}
 
-Test::Test(std::size_t n, int max_value) : n(n), max_value(max_value) {
+template <typename Num>
+Test<Num>::Test(std::size_t n, Num max_value) : n(n), max_value(max_value) {
     values.resize(n);
 }
 
-int Test::get_n() const { return n; }
+template <typename Num> std::size_t Test<Num>::get_n() const { return n; }
 
-int Test::get_max_value() const { return max_value; }
+template <typename Num> Num Test<Num>::get_max_value() const {
+    return max_value;
+}
 
-std::vector<int> &Test::get_values() { return values; }
+template <typename Num> std::vector<Num> &Test<Num>::get_values() {
+    return values;
+}
 
 /** Sort the elements using `sort_fn` and return the elapsed time. */
-std::chrono::duration<double> Test::run_sort(SortFunc sort_fn) {
+template <typename Num>
+std::chrono::duration<double> Test<Num>::run_sort(SortFunc sort_fn) {
     // Measure sort duration
     auto start_time = std::chrono::high_resolution_clock::now();
     sort_fn(get_values().begin(), get_values().end());
@@ -26,7 +33,8 @@ std::chrono::duration<double> Test::run_sort(SortFunc sort_fn) {
     return end_time - start_time;
 }
 
-std::istream &operator>>(std::istream &is, Test &test) {
+template <typename Num>
+std::istream &operator>>(std::istream &is, Test<Num> &test) {
     is >> test.n >> test.max_value;
     test.values.reserve(test.n);
 

@@ -3,26 +3,27 @@
 #include <istream>
 #include <vector>
 
-using SortFunc = void (*)(std::vector<int>::iterator,
-                          std::vector<int>::iterator);
+template <typename Num> class Test {
+    using SortFunc = void (*)(typename std::vector<Num>::iterator,
+                              typename std::vector<Num>::iterator);
 
-class Test {
-private:
+  private:
     std::size_t n;
-    int max_value;
-    std::vector<int> values;
+    Num max_value;
+    std::vector<Num> values;
 
-public:
+  public:
     Test();
-    Test(std::size_t n, int max_value);
+    Test(std::size_t n, Num max_value);
 
-    int get_n() const;
+    std::size_t get_n() const;
 
-    int get_max_value() const;
+    Num get_max_value() const;
 
-    std::vector<int> &get_values();
+    std::vector<Num> &get_values();
 
     std::chrono::duration<double> run_sort(SortFunc sort_fn);
 
-    friend std::istream &operator>>(std::istream &is, Test &test);
+    template <typename T>
+    friend std::istream &operator>>(std::istream &is, Test<T> &test);
 };

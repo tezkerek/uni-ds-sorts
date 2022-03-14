@@ -1,4 +1,4 @@
-#include "Test.hpp"
+#include "Test.cpp"
 #include "heapsort.hpp"
 #include "mergesort.hpp"
 #include "quicksort.hpp"
@@ -7,6 +7,7 @@
 #include "utils.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <cstddef>
 #include <filesystem>
 #include <fstream>
@@ -16,8 +17,9 @@
 #include <thread>
 #include <vector>
 
-using SortFunc = void (*)(std::vector<int>::iterator,
-                          std::vector<int>::iterator);
+using NumberType = long long;
+using SortFunc = void (*)(std::vector<NumberType>::iterator,
+                          std::vector<NumberType>::iterator);
 using SortFuncEntry = std::pair<std::string_view, SortFunc>;
 
 constexpr std::array<SortFuncEntry, 8> sort_functions = {{
@@ -37,9 +39,10 @@ constexpr std::size_t MAX_SORT_NAME_LENGTH =
                      })
         ->first.length();
 
-void test_sorts(Test &test) {
-    std::cout << "n = " << test.get_n() << ", max = " << test.get_max_value()
-              << '\n';
+template <typename Num>
+void test_sorts(Test<Num> &test) {
+    std::cout << "n = 10^" << std::log10(test.get_n()) << ", max = 10^"
+              << std::log10(test.get_max_value()) << '\n';
 
     // Compute expected answer using std::sort
     std::cout << "\t✔ " << right_pad("std::sort", MAX_SORT_NAME_LENGTH) << " : "
@@ -87,7 +90,7 @@ int main(int argc, char *argv[]) {
         std::cout << "Sorting " << test_file_path.filename() << '\n';
         std::ifstream test_file_is(test_file_path);
 
-        Test test;
+        Test<NumberType> test;
         test_file_is >> test;
 
         test_sorts(test);
