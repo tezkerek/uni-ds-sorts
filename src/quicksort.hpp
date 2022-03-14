@@ -5,7 +5,7 @@
 namespace {
 template <typename RandomIt>
 RandomIt median_of_3(RandomIt start, RandomIt end) {
-    auto mid = start + std::distance(start, end) / 2;
+    auto mid = start + std::distance(start, end) / 2 - 1;
     auto last = end - 1;
 
     if (*mid < *start) {
@@ -51,7 +51,7 @@ template <typename RandomIt> void quicksort(RandomIt start, RandomIt end) {
     }
 
     auto pivot = hoare_partition(start, end);
-    quicksort(start, pivot);
+    quicksort(start, pivot + 1);
     quicksort(pivot + 1, end);
 }
 } // namespace sorts
