@@ -13,6 +13,7 @@
 #include <iostream>
 #include <istream>
 #include <string_view>
+#include <thread>
 #include <vector>
 
 using SortFunc = void (*)(std::vector<int>::iterator,
@@ -40,17 +41,31 @@ void test_sorts(Test &test) {
               << '\n';
 
     // Compute expected answer using std::sort
-    Test expected_test(test);
-    auto result = expected_test.run_sort(std::sort);
-    std::cout << "\t✔ " << right_pad("std::sort", MAX_SORT_NAME_LENGTH)
-              << " : " << result.count() << '\n';
+    std::cout << "\t✔ " << right_pad("std::sort", MAX_SORT_NAME_LENGTH) << " : "
+              << std::flush;
+    Test expected_result(test);
+    auto result = expected_result.run_sort(std::sort);
+    std::cout << result.count() << '\n';
 
-    for (auto [sort_fn_name, sort_fn] : sort_functions) {
-        result = test.run_sort(sort_fn);
-        auto matches_expected = test.get_values() == expected_test.get_values();
-        std::cout << (matches_expected ? "\t✔ " : "\t✘ ")
-                  << right_pad(sort_fn_name, MAX_SORT_NAME_LENGTH) << " : "
-                  << result.count() << '\n';
+    // Run every sorting algorithm in a new thread
+    std::vector<std::thread> sorting_threads;
+    for (auto [sort_name, sort_fn] : sort_functions) {
+        sorting_threads.push_back(std::thread([=]() mutable {
+            auto result = test.run_sort(sort_fn);
+            auto matches_expected =
+                test.get_values() == expected_result.get_values();
+
+            // Output entire line at once
+            std::stringstream output;
+            output << (matches_expected ? "\t✔ " : "\t✘ ")
+                   << right_pad(sort_name, MAX_SORT_NAME_LENGTH) << " : "
+                   << result.count() << '\n';
+            std::cout << output.str();
+        }));
+    }
+
+    for (auto &thread : sorting_threads) {
+        thread.join();
     }
     std::cout << '\n';
 }
