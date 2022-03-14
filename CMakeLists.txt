@@ -4,6 +4,7 @@ project(Sorts)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_FLAGS_RELEASE_INIT "-Ofast")
 
 add_executable(sorts
     src/main.cpp
